@@ -3,22 +3,89 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- スマホで適切な表示倍率にするための設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>惑星のサイズ比較つーる</title>
+    <style>
+        /* 全体の基本スタイル */
+        body {
+            font-family: sans-serif;
+            max-width: 500px;
+            /* PCなど大画面で広がりすぎないように幅を制限 */
+            margin: 0 auto;
+            * 画面中央に配置 */ padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* フォーム部分を縦並びにする設定 */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            /* 要素を縦（列）方向に並べる */
+            gap: 12px;
+            /* 各要素の間の余白 */
+        }
+
+        /* セレクトボックスとボタンの共通スタイル */
+        select,
+        button {
+            width: 100%;
+            /* 横幅いっぱいに広げる */
+            padding: 12px;
+            /* スマホでもタップしやすいように高さを確保 */
+            font-size: 1rem;
+            /* 読みやすいフォントサイズ */
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            /* 角を少し丸くする */
+            box-sizing: border-box;
+        }
+
+        /* ボタンの強調スタイル */
+        button {
+            background-color: #0070f3;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0051a2;
+        }
+
+        /* 結果表示エリアのスタイル */
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            word-break: break-all;
+            /* 文字があふれないように自動改行 */
+        }
+    </style>
 </head>
 
 <body>
     <h1>惑星のサイズ比較つーる</h1>
 
-    <!-- inputタグからselectタグに変更 -->
-    <select id="select1">
-        <option value="">読み込み中...</option>
-    </select>
-    <select id="select2">
-        <option value="">読み込み中...</option>
-    </select>
-    <button id="callButton">サイズを比較！</button>
+    <!-- 縦並びにするためのコンテナ（枠組み）で囲む -->
+    <div class="form-container">
+        <select id="select1">
+            <option value="">読み込み中...</option>
+        </select>
+        <select id="select2">
+            <option value="">読み込み中...</option>
+        </select>
+        <button id="callButton">サイズを比較！</button>
+    </div>
 
-    <div id="result" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
+    <div id="result">
         ここに結果が表示されます
     </div>
 
@@ -42,7 +109,7 @@
                 select2.innerHTML = '';
 
                 // 取得した惑星一覧をプルダウンに追加
-                planets.forEach((planet, index) => {
+                planets.forEach((planet) => {
                     const option1 = document.createElement('option');
                     option1.value = planet.name;
                     option1.textContent = `${planet.name} (${planet.englishName})`;
