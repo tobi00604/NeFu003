@@ -9,8 +9,13 @@
 <body>
     <h1>惑星のサイズ比較つーる</h1>
 
-    <input type="text" id="nameInput1" placeholder="惑星名1を入力してください">
-    <input type="text" id="nameInput2" placeholder="惑星名2を入力してください">
+    <!-- inputタグからselectタグに変更 -->
+    <select id="select1">
+        <option value="">読み込み中...</option>
+    </select>
+    <select id="select2">
+        <option value="">読み込み中...</option>
+    </select>
     <button id="callButton">GO!</button>
 
     <div id="result" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
@@ -18,15 +23,61 @@
     </div>
 
     <script>
-        document.getElementById('callButton').addEventListener('click', async () => {
-            const name1 = document.getElementById('nameInput1').value;
-            const name2 = document.getElementById('nameInput2').value;
-            const resultDiv = document.getElementById('result');
+        const select1 = document.getElementById('select1');
+        const select2 = document.getElementById('select2');
+        const callButton = document.getElementById('callButton');
+        const resultDiv = document.getElementById('result');
+
+        // ページ読み込み時に惑星一覧を取得してプルダウンにセット
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/.netlify/functions/getPlanets');
+                if (!response.ok) {
+                    throw new Error('惑星一覧の取得に失敗しました');
+                }
+                const planets = await response.json();
+
+                // プルダウンを初期化
+                select1.innerHTML = '';
+                select2.innerHTML = '';
+
+                // 取得した惑星一覧をプルダウンに追加
+                planets.forEach((planet, index) => {
+                    const option1 = document.createElement('option');
+                    option1.value = planet.name;
+                    option1.textContent = `${planet.name} (${planet.englishName})`;
+
+                    const option2 = option1.cloneNode(true);
+
+                    select1.appendChild(option1);
+                    select2.appendChild(option2);
+                });
+
+                // デフォルトの選択値を設定（例: 1つ目を地球、2つ目を火星）
+                if (planets.length > 3) {
+                    select1.value = '地球';
+                    select2.value = '火星';
+                }
+
+            } catch (error) {
+                resultDiv.textContent = `初期化エラー: ${error.message}`;
+            }
+        });
+
+        // ボタンクリック時の処理
+        callButton.addEventListener('click', async () => {
+            const name1 = select1.value;
+            const name2 = select2.value;
+
+            if (!name1 || !name2) {
+                alert('惑星を選択してください');
+                return;
+            }
+
             resultDiv.textContent = '通信中...';
 
             try {
-                // POSTリクエストとして送信
-                const response = await fetch('/.netlify/functions/hello', {
+                const response = await fetch('/.netlify/functions/execute', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -35,7 +86,8 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('サーバーエラーが発生しました');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'サーバーエラーが発生しました');
                 }
 
                 const data = await response.json();
@@ -44,8 +96,7 @@
                 resultDiv.innerHTML = `
                     <p style="margin: 5px 0 0 0;">${name1} の半径は ${data.radius1} です。</p>
                     <p style="margin: 5px 0 0 0;">${name2} の半径は ${data.radius2} です。</p>
-                    <p style="margin: 5px 0 0 0;">${name1} の ${data.ratio} 倍が ${name2} ですね。</p>
-                    <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">サーバー時刻: ${data.time}</p>
+                    <p style="margin: 5px 0 0 0;">${name1} を ${data.ratio} 倍すると ${name2} ですね。</p>
                 `;
             } catch (error) {
                 resultDiv.textContent = `エラー: ${error.message}`;
