@@ -1,8 +1,4 @@
-module.exports = {
-  solarSystemPlanets,
-};
-
-const solarSystemPlanets = [
+export const solarSystemPlanets = [
   {
     name: "水星",
     englishName: "Mercury",
