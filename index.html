@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>惑星のサイズ比較つーる</title>
+</head>
+
+<body>
+    <h1>惑星のサイズ比較つーる</h1>
+
+    <input type="text" id="nameInput1" placeholder="惑星名1を入力してください">
+    <input type="text" id="nameInput2" placeholder="惑星名2を入力してください">
+    <button id="callButton">GO!</button>
+
+    <div id="result" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
+        ここに結果が表示されます
+    </div>
+
+    <script>
+        document.getElementById('callButton').addEventListener('click', async () => {
+            const name1 = document.getElementById('nameInput1').value;
+            const name2 = document.getElementById('nameInput2').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '通信中...';
+
+            try {
+                // POSTリクエストとして送信
+                const response = await fetch('/.netlify/functions/hello', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name1: name1, name2: name2 })
+                });
+
+                if (!response.ok) {
+                    throw new Error('サーバーエラーが発生しました');
+                }
+
+                const data = await response.json();
+
+                // 画面に結果を表示
+                resultDiv.innerHTML = `
+                    <p style="color: green; margin: 0;"><strong>成功！</strong></p>
+                    <p style="margin: 5px 0 0 0;">${name1} の半径は ${data.radius1} です。</p>
+                    <p style="margin: 5px 0 0 0;">${name2} の半径は ${data.radius2} です。</p>
+                    <p style="margin: 5px 0 0 0;">${name1} の ${ratio} 倍が ${name2} ですね。</p>
+                    <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">サーバー時刻: ${data.time}</p>
+                `;
+            } catch (error) {
+                resultDiv.textContent = `エラー: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+
+</html>
