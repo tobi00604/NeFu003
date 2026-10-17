@@ -33,9 +33,9 @@ export default async (req, context) => {
   const ratio = (planet2.radiusKm / planet1.radiusKm).toFixed(2);
 
   const data = {
-    radius1: `${planet1.radiusKm} km`,
-    radius2: `${planet2.radiusKm} km`,
-    ratio: ratio,
+    radius1: `約 ${planet1.radiusKm} km`,
+    radius2: `約 ${planet2.radiusKm} km`,
+    ratio: `約 ${ratio} `,
     time: new Date().toISOString()
   };
 
