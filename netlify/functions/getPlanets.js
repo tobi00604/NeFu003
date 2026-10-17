@@ -4,7 +4,8 @@ export default async (req, context) => {
 
   // 惑星名の一覧を抽出
   const planets = solarSystemPlanets.map(planet => ({
-    name: planet.name
+    name: planet.name,
+    englishName: planet.englishName
   }));
 
   return Response.json(planets, {
