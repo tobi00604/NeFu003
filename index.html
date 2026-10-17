@@ -3,17 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- スマホで適切な表示倍率にするための設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>惑星のサイズ比較つーる</title>
+    <title>惑星サイズ比較ツール</title>
     <style>
         /* 全体の基本スタイル */
         body {
             font-family: sans-serif;
             max-width: 500px;
-            /* PCなど大画面で広がりすぎないように幅を制限 */
             margin: 0 auto;
-            * 画面中央に配置 */ padding: 20px;
+            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -22,13 +20,10 @@
             margin-bottom: 20px;
         }
 
-        /* フォーム部分を縦並びにする設定 */
         .form-container {
             display: flex;
             flex-direction: column;
-            /* 要素を縦（列）方向に並べる */
             gap: 12px;
-            /* 各要素の間の余白 */
         }
 
         /* セレクトボックスとボタンの共通スタイル */
@@ -66,13 +61,12 @@
             background: #f0f0f0;
             border-radius: 6px;
             word-break: break-all;
-            /* 文字があふれないように自動改行 */
         }
     </style>
 </head>
 
 <body>
-    <h1>惑星のサイズ比較つーる</h1>
+    <h1>惑星サイズ比較ツール</h1>
 
     <!-- 縦並びにするためのコンテナ（枠組み）で囲む -->
     <div class="form-container">
