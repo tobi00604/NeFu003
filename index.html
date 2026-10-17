@@ -42,10 +42,9 @@
 
                 // 画面に結果を表示
                 resultDiv.innerHTML = `
-                    <p style="color: green; margin: 0;"><strong>成功！</strong></p>
                     <p style="margin: 5px 0 0 0;">${name1} の半径は ${data.radius1} です。</p>
                     <p style="margin: 5px 0 0 0;">${name2} の半径は ${data.radius2} です。</p>
-                    <p style="margin: 5px 0 0 0;">${name1} の ${ratio} 倍が ${name2} ですね。</p>
+                    <p style="margin: 5px 0 0 0;">${name1} の ${data.ratio} 倍が ${name2} ですね。</p>
                     <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">サーバー時刻: ${data.time}</p>
                 `;
             } catch (error) {
